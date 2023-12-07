@@ -1,5 +1,4 @@
-# We can't use 3.12 until we migrate from distutils.
-FROM python:3.11 as app
+FROM python:3.12 as app
 
 RUN apt update \
     && apt install -y \
