@@ -1,0 +1,59 @@
+name: Test
+
+on:
+  push:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [3.8, 3.9, 3.10, 3.11, 3.12]
+
+    steps:
+    - uses: actions/checkout@v4
+
+          - name: Set up Python ${{ matrix.python-version }}
+
+    - uses: actions/setup-python@v4
+      with:
+        python-version: ${{ matrix.python-version }}
+
+    - name: Display Python version
+      run: python -c "import sys; print(sys.version)"
+
+    - name: Install dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y \
+          bison \
+          krb5-kdc \
+          krb5-admin-server \
+          krb5-kdc-ldap \
+          slapd \
+          ldap-utils \
+          policycoreutils \
+          policycoreutils-python-utils \
+          expect \
+          selinux-basics \
+          selinux-policy-default \
+          auditd \
+          tini
+
+    - name: Install Poetry
+      uses: snok/install-poetry@v1
+
+    - name: Install kadmin
+      run: poetry install
+
+    - name: Setup test environment
+      run: |
+        cd test
+        bash setup.bash
+        
+    - name: Run tests
+      run: |
+        service slapd start
+        service krb5-admin-server start
+        service krb5-kdc start
+        python unittests.py
