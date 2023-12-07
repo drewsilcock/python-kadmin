@@ -1,9 +1,14 @@
+#!/bin/bash
+
+export SHELL=/bin/bash
+
+set -euxo pipefail
 
 function mkpasswd {
-    python -c "import string, random; print ''.join(random.choice(string.ascii_lowercase + string.digits) for _ in xrange(32))"
+    python -c "import string, random; print(''.join(random.choice(string.ascii_lowercase + string.digits) for _ in range(32)))"
 }
 
-kdb5_util destroy -f
+kdb5_util destroy -f 2> /dev/null || true
 
 # load an updated krb5.conf with correct permissions
 chown --reference=/etc/krb5.conf ./krb5.conf 
@@ -20,5 +25,5 @@ expect /tmp/kdb_create.expect
 kadmin.local -q "ank -randkey kadmin/admin"
 kadmin.local -q "ank -randkey kadmin/changepw"
 
-service kadmin restart
-service krb5kdc restart
+service krb5-admin-server restart
+service krb5-kdc restart

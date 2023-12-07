@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -x
+
 echo "loading schema files..."
 
 ldapmodify -Q -H ldapi:/// -Y EXTERNAL -ac -f ./schema/core.ldif
@@ -12,3 +14,4 @@ ldapmodify -Q -H ldapi:/// -Y EXTERNAL -ac -f ./schema/kerberos.ldif
 ldapmodify -Q -H ldapi:/// -Y EXTERNAL -ac -f ./schema/misc.ldif
 ldapmodify -Q -H ldapi:/// -Y EXTERNAL -ac -f ./schema/samba.ldif
 
+true

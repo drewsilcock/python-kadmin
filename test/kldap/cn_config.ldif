@@ -3,6 +3,7 @@ objectClass: olcGlobal
 cn: config
 olcPidFile: /var/run/openldap/slapd.pid
 olcLogFile: /var/log/openldap/slapd.log
+olcLogLevel: -1
 olcTLSVerifyClient: try
 olcPasswordHash: {SSHA}
 olcThreads: 16

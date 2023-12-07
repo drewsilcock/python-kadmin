@@ -11,11 +11,6 @@ from pprint import pprint
 
 import os.path
 
-try: 
-    input = raw_input
-except NameError: 
-    pass
-
 TEST_PRINCIPAL = "test/admin@EXAMPLE.COM"
 TEST_KEYTAB    = "./test.keytab"
 TEST_CCACHE    = "./krb5cc_test"
@@ -496,26 +491,18 @@ class KAdminLocalUnitTests(unittest.TestCase):
 
 
 def main():
-    
-    #confirm = input('run tests against local kadmin server [yes/no] ? ')
+    create_test_prinicipal()
+    create_ccache()
 
-    #if confirm.lower() == 'yes':
+    logging.basicConfig(filename=TEST_LOG, format=LOG_FORMAT, level=logging.DEBUG)
 
-    if True:
-        create_test_prinicipal()
-        create_ccache()
+    # setup unit tests
 
-        logging.basicConfig(filename=TEST_LOG, format=LOG_FORMAT, level=logging.DEBUG)
+    kadmin_tests = unittest.TestLoader().loadTestsFromTestCase(KAdminUnitTests)
+    kadmin_local_tests = unittest.TestLoader().loadTestsFromTestCase(KAdminLocalUnitTests)
 
-        # setup unit tests
-
-        kadmin_tests = unittest.TestLoader().loadTestsFromTestCase(KAdminUnitTests)
-        kadmin_local_tests = unittest.TestLoader().loadTestsFromTestCase(KAdminLocalUnitTests)
-
-        unittest.TextTestRunner(verbosity=2).run(kadmin_tests)
-        unittest.TextTestRunner(verbosity=2).run(kadmin_local_tests)
-
-        #unittest.main()
+    unittest.TextTestRunner(verbosity=2).run(kadmin_tests)
+    unittest.TextTestRunner(verbosity=2).run(kadmin_local_tests)
 
 
 if __name__ == '__main__':
