@@ -47,12 +47,16 @@ jobs:
 
     - name: Setup test environment
       run: |
+        # Setup script assumes that services are not running.
+        sudo service slapd stop || true
+        sudo service krb5-admin-server stop || true
+        sudo service krb5-kdc stop || true
         cd test
         sudo bash setup.bash
         
     - name: Run tests
       run: |
-        sudo service slapd start
-        sudo service krb5-admin-server start
-        sudo service krb5-kdc start
+        sudo service slapd start || true
+        sudo service krb5-admin-server start || true
+        sudo service krb5-kdc start || true
         python unittests.py
