@@ -48,11 +48,11 @@ jobs:
     - name: Setup test environment
       run: |
         cd test
-        bash setup.bash
+        sudo bash setup.bash
         
     - name: Run tests
       run: |
-        service slapd start
-        service krb5-admin-server start
-        service krb5-kdc start
+        sudo service slapd start
+        sudo service krb5-admin-server start
+        sudo service krb5-kdc start
         python unittests.py
