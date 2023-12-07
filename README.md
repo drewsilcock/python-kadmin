@@ -1,11 +1,11 @@
-python-kadmin
-=============
+# python-kadmin
 
 Python module for kerberos admin (kadm5)
 
 ## Initilization
 
 ### kadmin
+
 ```python
 import kadmin
 
@@ -14,22 +14,24 @@ kadm = kadmin.init_with_ccache("user/admin@EXAMPLE.COM", "/path/to/krb5cc")
 kadm = kadmin.init_with_password("user/admin@EXAMPLE.COM", "aStrongPassword")
 ```
 ### kadmin_local
-used for direct database access as local root account.
+
+Used for direct database access as local root account.
+
 ```python
 import kadmin_local as kadmin
 
 kadm = kadmin.local();
 ```
+
 \* kadmin\_local also supports the other init\_with\_&lt;method&gt; initializers whereas kadmin does not support local.
+
 It is advised that kadmin_local is used for rapid unpacked iteration, other tasks should be handled by the gssapi connection.
 
+## Examples:
 
-##Examples:
-
-###Principal Creation: 
+### Principal Creation: 
 
 ```python
->>> 
 >>> # ank, addprinc, add_principal are all aliases for principal creation
 >>> # omitting a password or setting to None results in a randomized key
 >>> # kadm.ank(principal [, password|None] [, db_args=db_args])
@@ -38,10 +40,10 @@ It is advised that kadmin_local is used for rapid unpacked iteration, other task
 >>> kadm.addprinc("user@EXAMPLE.COM", None)
 >>> # 
 >>> kadm.add_principal("user@EXAMPLE.COM", None, db_args={'dn':'uid=user,ou=people,dc=example,dc=com'})
->>>
 ```
 
-###Principal Attributes:
+### Principal Attributes:
+
 ```python
 >>> princ = kadm.getprinc("user@EXAMPLE.COM")
 >>>
@@ -100,26 +102,25 @@ It is advised that kadmin_local is used for rapid unpacked iteration, other task
 >>> # for an existing principal object discard local state and
 >>> #  fetch the state as it appears in the database
 >>> princ.reload()
-
-
-
 ```
 
-###Change a password:
+### Change a password:
+
 ```python
 princ = kadm.getprinc("user@EXAMPLE.COM")
 princ.change_password("correcthorsebatterystaple")
 ```
 
-###Iteration:
+### Iteration:
+
 ```python
 for princ in kadm.principals():
   # princ is a string
-  print princ
+  print(princ)
 
 for princ in kadm.principals('r*@EXAMPLE.COM'):
   # princ is a string starting with 'r' and ending with '@EXAMPLE.COM'
-  print princ
+  print(princ)
 
 # unpacked iteration
 #  prints each principal, data is optiona
@@ -147,5 +148,4 @@ kadm.each_principal(callback_b, data="Hello, ")
 for princ in kadm.principals('*'):
 	principal = kadm.get_princ(princ)
 	# use principal as needed
-
 ```
