@@ -3,7 +3,7 @@ name: Test
 on: [push, pull_request]
 
 jobs:
-  build:
+  test:
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -55,6 +55,7 @@ jobs:
         sudo bash setup.bash || true
         sudo systemctl status slapd.service
         sudo journalctl -xu slapd.service
+        sudo cat /var/log/openldap/slapd.log
         
     - name: Run tests
       run: |
