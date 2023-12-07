@@ -54,7 +54,7 @@ jobs:
         cd test
         sudo bash setup.bash || true
         sudo systemctl status slapd.service
-        sudo journalctl -xeu slapd.service
+        sudo journalctl -xu slapd.service
         
     - name: Run tests
       run: |
