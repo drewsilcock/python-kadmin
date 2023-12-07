@@ -52,7 +52,9 @@ jobs:
         sudo service krb5-admin-server stop || true
         sudo service krb5-kdc stop || true
         cd test
-        sudo bash setup.bash
+        sudo bash setup.bash || true
+        sudo systemctl status slapd.service
+        sudo journalctl -xeu slapd.service
         
     - name: Run tests
       run: |
